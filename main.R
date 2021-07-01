@@ -5,8 +5,10 @@ library(stringr)
 library(sbtools)
 library(whisker)
 
+#Main directory should be: ~/ds-pipelines-targets-1
+
 #1_fetch----
-#~\ds-pipelines-targets-1\1_fetch\src
+setwd('./1_fetch/src')
 source('getData.R')
 data = getData(outDir = '../out')
 
