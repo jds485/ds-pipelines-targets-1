@@ -1,12 +1,12 @@
 #' Plots the processed data
-#' @data the dataframe returned from the processData function
-#' @outDir the directory to save the figure with trailing /
-#' @figName the figure name with png extension.
-#' @xlim plot x limits
-#' @ylim plot y limits
-#' @width figure width (in)
-#' @height figure height (in)
-#' @res figure resolution (dpi)
+#' @param data the dataframe returned from the processData function
+#' @param outDir the directory to save the figure with trailing /
+#' @param figName the figure name with png extension.
+#' @param xlim plot x limits
+#' @param ylim plot y limits
+#' @param width figure width (in)
+#' @param height figure height (in)
+#' @param res figure resolution (dpi)
 #' @return printed statement
 plotDiagnostics <- function(data,
                            outDir,

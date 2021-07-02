@@ -1,10 +1,10 @@
 #' Processes the data for plotting
-#' @data the data to be processed
-#' @filterStr the string to filter data in the exper_id column (e.g., season, similar). Default is no filtering.
-#' @pltCols vector of plot colors for model types
-#' @pltPchs vector of plot pch for model types
-#' @outDir desired directory to save processed data
-#' @fileName desired saved file name
+#' @param data the data to be processed
+#' @param filterStr the string to filter data in the exper_id column (e.g., season, similar). Default is no filtering.
+#' @param pltCols vector of plot colors for model types
+#' @param pltPchs vector of plot pch for model types
+#' @param outDir desired directory to save processed data
+#' @param fileName desired saved file name
 #' @return dataframe of the processed data
 processData <- function(data,
                        filterStr = 'similar',
@@ -32,9 +32,9 @@ processData <- function(data,
 }
 
 #' Write a file describing the diagnostic results
-#' @data the dataframe with model_type, exper_id, and rmse columns
-#' @outDir desired directory to save summary paragraph
-#' @fileName desired saved file name
+#' @param data the dataframe with model_type, exper_id, and rmse columns
+#' @param outDir desired directory to save summary paragraph
+#' @param fileName desired saved file name
 #' @return list of the mean rmse for the model runs
 writeSummary <- function(data,
                         outDir,
@@ -55,7 +55,7 @@ writeSummary <- function(data,
 }
 
 #' Summarize the model performance
-#' @data the dataframe with model_type, exper_id, and rmse columns
+#' @param data the dataframe with model_type, exper_id, and rmse columns
 #' @return list of the mean rmse for the model runs
 diagnosticData <- function(data){
   render_data <- list(pgdl_980mean = diagnosticFilter(data, model_type = 'pgdl', exper_id = "similar_980"),
@@ -72,9 +72,9 @@ diagnosticData <- function(data){
 }
 
 #' Filter for mean RMSE
-#' @data the dataframe with model_type, exper_id, and rmse columns
-#' @model_type string of the model type to be filtered
-#' @exper_id string of the ID to be filtered
+#' @param data the dataframe with model_type, exper_id, and rmse columns
+#' @param model_type string of the model type to be filtered
+#' @param exper_id string of the ID to be filtered
 #' @return mean rmse rounded to 2 decimal places
 diagnosticFilter <- function(data, model_type, exper_id){
   a <- filter(data, model_type == !!model_type, exper_id == !!exper_id) %>% pull(rmse) %>% mean %>% round(2)
