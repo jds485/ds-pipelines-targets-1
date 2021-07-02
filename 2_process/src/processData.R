@@ -13,7 +13,7 @@ processData <- function(data,
                        outDir,
                        fileName = 'model_summary_results.csv'
                        ){
-  eval_data <- data %>%
+  evalData <- data %>%
     filter(str_detect(exper_id, paste0(filterStr,'_[0-9]+'))) %>%
     mutate(col = case_when(
       model_type == 'pb' ~ pltCols[1],
@@ -26,9 +26,9 @@ processData <- function(data,
     ), n_prof = as.numeric(str_extract(exper_id, '[0-9]+')))
   
   # Save the processed data
-  readr::write_csv(eval_data, file = file.path(outDir, fileName))
+  readr::write_csv(evalData, file = file.path(outDir, fileName))
   
-  return(eval_data)
+  return(evalData)
 }
 
 #' Write a file describing the diagnostic results
@@ -40,25 +40,25 @@ writeSummary <- function(data,
                         outDir,
                         fileName = 'model_diagnostic_text.txt'){
   # Get the model diagnostic data
-  render_data <- diagnosticData(data)
+  renderData <- diagnosticData(data)
   
   # Text paragraph describing the diagnostic results
-  template_1 <- 'resulted in mean RMSEs (means calculated as average of RMSEs from the five dataset iterations) of {{pgdl_980mean}}, {{dl_980mean}}, and {{pb_980mean}}°C for the PGDL, DL, and PB models, respectively.
+  template1 <- 'resulted in mean RMSEs (means calculated as average of RMSEs from the five dataset iterations) of {{pgdl_980mean}}, {{dl_980mean}}, and {{pb_980mean}}°C for the PGDL, DL, and PB models, respectively.
   The relative performance of DL vs PB depended on the amount of training data. The accuracy of Lake Mendota temperature predictions from the DL was better than PB when trained on 500 profiles 
   ({{dl_500mean}} and {{pb_500mean}}°C, respectively) or more, but worse than PB when training was reduced to 100 profiles ({{dl_100mean}} and {{pb_100mean}}°C respectively) or fewer.
   The PGDL prediction accuracy was more robust compared to PB when only two profiles were provided for training ({{pgdl_2mean}} and {{pb_2mean}}°C, respectively). '
   
-  whisker.render(template_1 %>% str_remove_all('\n') %>% str_replace_all('  ', ' '), 
-                 render_data) %>% cat(file = file.path(outDir, fileName))
+  whisker.render(template1 %>% str_remove_all('\n') %>% str_replace_all('  ', ' '), 
+                 renderData) %>% cat(file = file.path(outDir, fileName))
   
-  return(render_data)
+  return(renderData)
 }
 
 #' Summarize the model performance
 #' @param data the dataframe with model_type, exper_id, and rmse columns
 #' @return list of the mean rmse for the model runs
 diagnosticData <- function(data){
-  render_data <- list(pgdl_980mean = diagnosticFilter(data, model_type = 'pgdl', exper_id = "similar_980"),
+  renderData <- list(pgdl_980mean = diagnosticFilter(data, model_type = 'pgdl', exper_id = "similar_980"),
                       dl_980mean = diagnosticFilter(data, 'dl', "similar_980"),
                       pb_980mean = diagnosticFilter(data, 'pb', "similar_980"),
                       dl_500mean = diagnosticFilter(data, 'dl', "similar_500"),
@@ -68,7 +68,7 @@ diagnosticData <- function(data){
                       pgdl_2mean = diagnosticFilter(data, 'pgdl', "similar_2"),
                       pb_2mean = diagnosticFilter(data, 'pb', "similar_2"))
   
-  return(render_data)
+  return(renderData)
 }
 
 #' Filter for mean RMSE

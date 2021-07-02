@@ -9,8 +9,8 @@ getData <- function(outDir,
                    fileName = 'me_RMSE.csv',
                    outFileName = 'model_RMSEs.csv'){
   
-  mendota_file <- file.path(outDir, outFileName)
-  a <- item_file_download(sb_id = sbID, names = fileName, destinations = mendota_file, overwrite_file = TRUE)
+  mendotaFile <- file.path(outDir, outFileName)
+  a <- item_file_download(sb_id = sbID, names = fileName, destinations = mendotaFile, overwrite_file = TRUE)
   
   data <- loadData(a)
   
