@@ -8,7 +8,7 @@
 #' @height figure height (in)
 #' @res figure resolution (dpi)
 #' @return printed statement
-plotDiagnostics = function(data,
+plotDiagnostics <- function(data,
                            outDir,
                            figName = 'figure_1.png',
                            xlim = c(2, 1000),

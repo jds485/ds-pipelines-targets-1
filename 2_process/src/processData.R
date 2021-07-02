@@ -6,14 +6,14 @@
 #' @outDir desired directory to save processed data
 #' @fileName desired saved file name
 #' @return dataframe of the processed data
-processData = function(data,
+processData <- function(data,
                        filterStr = 'similar',
                        pltCols = c('#1b9e77', '#d95f02', '#7570b3'),
                        pltPchs = c(21, 22, 23),
                        outDir,
                        fileName = 'model_summary_results.csv'
                        ){
-  eval_data = data %>%
+  eval_data <- data %>%
     filter(str_detect(exper_id, paste0(filterStr,'_[0-9]+'))) %>%
     mutate(col = case_when(
       model_type == 'pb' ~ pltCols[1],
@@ -36,11 +36,11 @@ processData = function(data,
 #' @outDir desired directory to save summary paragraph
 #' @fileName desired saved file name
 #' @return list of the mean rmse for the model runs
-writeSummary = function(data,
+writeSummary <- function(data,
                         outDir,
                         fileName = 'model_diagnostic_text.txt'){
   # Get the model diagnostic data
-  render_data = diagnosticData(data)
+  render_data <- diagnosticData(data)
   
   # Text paragraph describing the diagnostic results
   template_1 <- 'resulted in mean RMSEs (means calculated as average of RMSEs from the five dataset iterations) of {{pgdl_980mean}}, {{dl_980mean}}, and {{pb_980mean}}°C for the PGDL, DL, and PB models, respectively.
@@ -57,7 +57,7 @@ writeSummary = function(data,
 #' Summarize the model performance
 #' @data the dataframe with model_type, exper_id, and rmse columns
 #' @return list of the mean rmse for the model runs
-diagnosticData = function(data){
+diagnosticData <- function(data){
   render_data <- list(pgdl_980mean = diagnosticFilter(data, model_type = 'pgdl', exper_id = "similar_980"),
                       dl_980mean = diagnosticFilter(data, 'dl', "similar_980"),
                       pb_980mean = diagnosticFilter(data, 'pb', "similar_980"),
@@ -76,7 +76,7 @@ diagnosticData = function(data){
 #' @model_type string of the model type to be filtered
 #' @exper_id string of the ID to be filtered
 #' @return mean rmse rounded to 2 decimal places
-diagnosticFilter = function(data, model_type, exper_id){
-  a = filter(data, model_type == !!model_type, exper_id == !!exper_id) %>% pull(rmse) %>% mean %>% round(2)
+diagnosticFilter <- function(data, model_type, exper_id){
+  a <- filter(data, model_type == !!model_type, exper_id == !!exper_id) %>% pull(rmse) %>% mean %>% round(2)
   return(a)
 }

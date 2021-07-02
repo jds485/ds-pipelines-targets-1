@@ -10,16 +10,16 @@ library(whisker)
 #1_fetch----
 setwd('./1_fetch/src')
 source('getData.R')
-data = getData(outDir = '../out')
+data <- getData(outDir = '../out')
 
 #2_process----
 setwd('../../2_process/src/')
 source('processData.R')
 # Prepare the data for plotting and save to file
-data = processData(data,
+data <- processData(data,
                    outDir = '../out/')
 
-RMSEs = writeSummary(data, 
+RMSEs <- writeSummary(data, 
                      outDir = '../out/')
 
 #3_visualize----
