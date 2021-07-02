@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+1_fetch/out/*
+2_process/out/*
+3_visualize/out/*

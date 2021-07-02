@@ -1,0 +1,26 @@
+#' Gets the data from ScienceBase
+#' @param outDir desired location of the downloaded file
+#' @param sbID ScienceBase (SB) ID corresponding to the item
+#' @param fileName the name of the SB file
+#' @param outFileName the desired name of the saved file
+#' @return dataframe of the data
+getData <- function(outDir,
+                   sbID = '5d925066e4b0c4f70d0d0599',
+                   fileName = 'me_RMSE.csv',
+                   outFileName = 'model_RMSEs.csv'){
+  
+  mendotaFile <- file.path(outDir, outFileName)
+  a <- item_file_download(sb_id = sbID, names = fileName, destinations = mendotaFile, overwrite_file = TRUE)
+  
+  data <- loadData(a)
+  
+  return(data)
+}
+
+#' Loads the data into a dataframe
+#' @param downloadCode the code returned from item_file_download
+#' @return dataframe of the data
+loadData <- function(downloadCode){
+  data <- readr::read_csv(file = downloadCode, col_types = 'iccd')
+  return(data)
+}
