@@ -10,17 +10,15 @@ getData <- function(outDir,
                    outFileName = 'model_RMSEs.csv'){
   
   mendotaFile <- file.path(outDir, outFileName)
-  a <- item_file_download(sb_id = sbID, names = fileName, destinations = mendotaFile, overwrite_file = TRUE)
+  out_filepath <- item_file_download(sb_id = sbID, names = fileName, destinations = mendotaFile, overwrite_file = TRUE)
   
-  data <- loadData(a)
-  
-  return(data)
+  return(out_filepath)
 }
 
 #' Loads the data into a dataframe
-#' @param downloadCode the code returned from item_file_download
+#' @param filepath the full path to the file to be loaded
 #' @return dataframe of the data
-loadData <- function(downloadCode){
-  data <- readr::read_csv(file = downloadCode, col_types = 'iccd')
+loadData <- function(filepath){
+  data <- readr::read_csv(file = filepath, col_types = 'iccd')
   return(data)
 }
