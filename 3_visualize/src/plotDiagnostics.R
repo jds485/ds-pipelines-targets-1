@@ -25,7 +25,8 @@ plotDiagnostics <- function(data,
     mutate(dl = -pgdl, pb = 0, n_prof = nProfs)
   
   #make plot
-  png(file = file.path(outDir, figName), width = width, height = height, res = res, units = 'in')
+  fout = file.path(outDir, figName)
+  png(file = fout, width = width, height = height, res = res, units = 'in')
   par(omi = c(0,0,0.05,0.05), mai = c(1,1,0,0), las = 1, mgp = c(2,.5,0), cex = 1.5)
   
   plot(NA, NA, xlim = xlim, ylim = ylim,
@@ -63,5 +64,5 @@ plotDiagnostics <- function(data,
   
   dev.off()
   
-  return('Figure generated.')
+  return(fout)
 }
