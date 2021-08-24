@@ -3,15 +3,11 @@
 #' @param filterStr the string to filter data in the exper_id column (e.g., season, similar). Default is no filtering.
 #' @param pltCols vector of plot colors for model types
 #' @param pltPchs vector of plot pch for model types
-#' @param outDir desired directory to save processed data
-#' @param fileName desired saved file name
 #' @return dataframe of the processed data
 processData <- function(data,
                        filterStr = 'similar',
                        pltCols = c('#1b9e77', '#d95f02', '#7570b3'),
-                       pltPchs = c(21, 22, 23),
-                       outDir,
-                       fileName = 'model_summary_results.csv'
+                       pltPchs = c(21, 22, 23)
                        ){
   evalData <- data %>%
     filter(str_detect(exper_id, paste0(filterStr,'_[0-9]+'))) %>%
@@ -25,18 +21,30 @@ processData <- function(data,
       model_type == 'pgdl' ~ pltPchs[3]
     ), n_prof = as.numeric(str_extract(exper_id, '[0-9]+')))
   
-  # Save the processed data
-  readr::write_csv(evalData, file = file.path(outDir, fileName))
-  
   return(evalData)
+}
+
+#' Write a file describing the diagnostic results
+#' @param data the dataframe with model_type, exper_id, and rmse columns
+#' @param outDir desired directory to save summary data
+#' @param fileName desired saved file name
+#' @return save filepath
+writeSummaryData <- function(data,
+                         outDir,
+                         fileName = 'model_summary_results.csv'){
+  # Output filepath
+  fout = file.path(outDir, fileName)
+  write_csv(data, file = fout)
+  
+  return(fout)
 }
 
 #' Write a file describing the diagnostic results
 #' @param data the dataframe with model_type, exper_id, and rmse columns
 #' @param outDir desired directory to save summary paragraph
 #' @param fileName desired saved file name
-#' @return list of the mean rmse for the model runs
-writeSummary <- function(data,
+#' @return save filepath
+writeSummaryText <- function(data,
                         outDir,
                         fileName = 'model_diagnostic_text.txt'){
   # Get the model diagnostic data
@@ -48,10 +56,13 @@ writeSummary <- function(data,
   ({{dl_500mean}} and {{pb_500mean}}°C, respectively) or more, but worse than PB when training was reduced to 100 profiles ({{dl_100mean}} and {{pb_100mean}}°C respectively) or fewer.
   The PGDL prediction accuracy was more robust compared to PB when only two profiles were provided for training ({{pgdl_2mean}} and {{pb_2mean}}°C, respectively). '
   
-  whisker.render(template1 %>% str_remove_all('\n') %>% str_replace_all('  ', ' '), 
-                 renderData) %>% cat(file = file.path(outDir, fileName))
+  # Output filepath
+  fout = file.path(outDir, fileName)
   
-  return(renderData)
+  whisker.render(template1 %>% str_remove_all('\n') %>% str_replace_all('  ', ' '), 
+                 renderData) %>% cat(file = fout)
+  
+  return(fout)
 }
 
 #' Summarize the model performance
